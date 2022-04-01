@@ -149,14 +149,14 @@ async fn main() -> std::io::Result<()> {
         if !closes.is_empty() {
             // min/max of the period. unwrap() because those are Option types
             let max_signal = MaxPrice {};
-            let period_max: f64 = max_signal.calculate(&closes).unwrap();
+            let period_max: f64 = max_signal.calculate(&closes).await.unwrap();
             let min_signal = MinPrice {};
-            let period_min: f64 = min_signal.calculate(&closes).unwrap();
+            let period_min: f64 = min_signal.calculate(&closes).await.unwrap();
             let last_price = *closes.last().unwrap_or(&0.0);
             let price_diff_signal = PriceDifference {};
-            let (_, pct_change) = price_diff_signal.calculate(&closes).unwrap_or((0.0, 0.0));
+            let (_, pct_change) = price_diff_signal.calculate(&closes).await.unwrap_or((0.0, 0.0));
             let windowed_sma_signal = WindowedSMA { window_size: 30 };
-            let sma = windowed_sma_signal.calculate(&closes).unwrap_or_default();
+            let sma = windowed_sma_signal.calculate(&closes).await.unwrap_or_default();
 
             // a simple way to output CSV data
             println!(
